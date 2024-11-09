@@ -93,6 +93,7 @@ public class TestUtils {
     }
 
     public static Subscribe createSubscribe(StandaloneBroker standaloneBroker) {
+        standaloneBroker.createTopic(TEST_TOPIC);
         return new Subscribe(TEST_TOPIC, standaloneBroker, (cloudEvent, context) -> {
         });
     }

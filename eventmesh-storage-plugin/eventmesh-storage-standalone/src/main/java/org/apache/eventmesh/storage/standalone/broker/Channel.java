@@ -31,6 +31,7 @@ import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 
 import lombok.Getter;
+import lombok.Setter;
 
 
 public class Channel implements LifeCycle {
@@ -39,7 +40,8 @@ public class Channel implements LifeCycle {
     @Getter
     private DisruptorProvider provider;
     private final Integer size;
-    private final EventHandler<MessageEntity> eventHandler;
+    @Setter
+    private EventHandler<MessageEntity> eventHandler;
     private volatile boolean started = false;
     private final TopicMetadata topic;
     private static final String THREAD_NAME_PREFIX = "standalone_disruptor_provider_";
@@ -48,13 +50,15 @@ public class Channel implements LifeCycle {
         this(DEFAULT_SIZE, topic, eventHandler);
     }
 
+    public Channel(TopicMetadata topic) {
+        this(DEFAULT_SIZE, topic, null);
+    }
 
     public Channel(final Integer ringBufferSize, final TopicMetadata topic, final EventHandler<MessageEntity> eventHandler) {
         this.size = ringBufferSize;
         this.topic = topic;
         this.eventHandler = eventHandler;
     }
-
 
     @Override
     public boolean isStarted() {
